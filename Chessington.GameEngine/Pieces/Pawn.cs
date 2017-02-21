@@ -14,17 +14,27 @@ namespace Chessington.GameEngine.Pieces
             var movesList = new List<Square>();
             var location = board.FindPiece(this);
             
-            switch (board.CurrentPlayer)
+            switch (this.Player)
             {
                 case Player.Black:
+                    if (location.Row == 1)
+                    {
+                        movesList.Add(new Square(location.Row+2, location.Col));
+                    }
                     movesList.Add(new Square(location.Row + 1, location.Col));
                     break;
                 case Player.White:
+                    if (location.Row == 7)
+                    {
+                        movesList.Add(new Square(location.Row - 2, location.Col));
+                    }
                     movesList.Add(new Square(location.Row - 1, location.Col));
                     break;
             }
             
             return movesList;
         }
+
+
     }
 }
