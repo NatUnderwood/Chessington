@@ -36,12 +36,5 @@ namespace Chessington.GameEngine.Pieces
             
             return movesList;
         }
-
-        public bool CheckForBlockingPiece(int row, int col, Board board)
-        {
-            if (board.GetPiece(Square.At(row, col)) == null)
-                return true;
-            return false;
-        }
     }
 }

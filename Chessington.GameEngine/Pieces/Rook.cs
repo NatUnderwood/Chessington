@@ -13,13 +13,53 @@ namespace Chessington.GameEngine.Pieces
             var movesList = new List<Square>();
             var location = board.FindPiece(this);
 
-            for(var i = 0; i < 8; i++)
-                movesList.Add(Square.At(location.Row, i));
+            for (var i = location.Row+1; i < 8; i++)
+            {
+                if (CheckForBlockingPiece(location.Row, i, board))
+                {
+                    movesList.Add(Square.At(location.Row, i));
+                }
+                else
+                {
+                    break;
+                }
+            }
 
-            for (var i = 0; i < 8; i++)
-                movesList.Add(Square.At(i, location.Col));
+            for (var i = location.Row-1; i >=0; i--)
+            {
+                if (CheckForBlockingPiece(location.Row, i, board))
+                {
+                    movesList.Add(Square.At(location.Row, i));
+                }
+                else
+                {
+                    break;
+                }
+            }
 
-            movesList.RemoveAll(s => s == Square.At(4, 4));
+            for (var i = location.Col+1; i < 8; i++)
+            {
+                if (CheckForBlockingPiece(i, location.Col, board))
+                {
+                    movesList.Add(Square.At(i, location.Col));
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            for (var i = location.Col - 1; i >=0; i--)
+            {
+                if (CheckForBlockingPiece(i, location.Col, board))
+                {
+                    movesList.Add(Square.At(i, location.Col));
+                }
+                else
+                {
+                    break;
+                }
+            }
 
             return movesList;
         }

@@ -20,5 +20,11 @@ namespace Chessington.GameEngine.Pieces
             var currentSquare = board.FindPiece(this);
             board.MovePiece(currentSquare, newSquare);
         }
+        public bool CheckForBlockingPiece(int row, int col, Board board)
+        {
+            if (board.GetPiece(Square.At(row, col)) == null)
+                return true;
+            return false;
+        }
     }
 }
