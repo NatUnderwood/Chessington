@@ -1,4 +1,5 @@
-﻿using Chessington.GameEngine.Pieces;
+﻿using System;
+using Chessington.GameEngine.Pieces;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -27,7 +28,6 @@ namespace Chessington.GameEngine.Tests.Pieces
             board.AddPiece(Square.At(1, 0), pawn);
 
             var moves = pawn.GetAvailableMoves(board);
-
             moves.Should().Contain(Square.At(2, 0));
         }
     }
