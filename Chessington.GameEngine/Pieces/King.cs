@@ -10,7 +10,40 @@ namespace Chessington.GameEngine.Pieces
 
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
-            return Enumerable.Empty<Square>();
+            var movesList = new List<Square>();
+            var location = board.FindPiece(this);
+
+            if (checkIfAllowedSquare(location.Row + 1, location.Col + 1))
+                movesList.Add(Square.At(location.Row + 1, location.Col + 1));
+
+            if (checkIfAllowedSquare(location.Row + 1, location.Col))
+                movesList.Add(Square.At(location.Row + 1, location.Col));
+
+            if (checkIfAllowedSquare(location.Row, location.Col + 1))
+                movesList.Add(Square.At(location.Row , location.Col + 1));
+
+            if (checkIfAllowedSquare(location.Row - 1, location.Col + 1))
+                movesList.Add(Square.At(location.Row - 1, location.Col + 1));
+
+            if (checkIfAllowedSquare(location.Row - 1, location.Col))
+                movesList.Add(Square.At(location.Row - 1, location.Col));
+
+            if (checkIfAllowedSquare(location.Row - 1, location.Col - 1))
+                movesList.Add(Square.At(location.Row - 1, location.Col - 1));
+
+            if (checkIfAllowedSquare(location.Row + 1, location.Col - 1))
+                movesList.Add(Square.At(location.Row + 1, location.Col - 1));
+
+            if (checkIfAllowedSquare(location.Row, location.Col - 1))
+                movesList.Add(Square.At(location.Row, location.Col - 1));
+
+            return movesList;
+        }
+        public bool checkIfAllowedSquare(int attemptedRow, int attemptedCol)
+        {
+            if (attemptedCol < 8 && attemptedCol >= 0 && attemptedRow < 8 && attemptedRow >= 0)
+                return true;
+            return false;
         }
     }
 }
