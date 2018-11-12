@@ -19,19 +19,50 @@ namespace Chessington.GameEngine.Pieces
             var minMoves = Math.Min(8 - max, min);
             for (var i=1;i<(8-max);i++)
             {
-                movesList.Add(Square.At(location.Row+i,location.Col+i));
+                if (CheckForBlockingPiece(location.Row + i, location.Col + i, board))
+                {
+                    movesList.Add(Square.At(location.Row + i, location.Col + i));
+                }
+                else
+                {
+                    break;
+                }
             }
-            for (var i = 1; i < min+1; i++)
+
+            for (var i = 1; i < min + 1; i++)
             {
-                movesList.Add(Square.At(location.Row - i, location.Col - i));
+                if (CheckForBlockingPiece(location.Row - i, location.Col - i, board))
+                { 
+                    movesList.Add(Square.At(location.Row - i, location.Col - i));
+                }
+                else
+                {
+                    break;
+                }
             }
+
             for (var i = 1; i <  minMoves; i++)
             {
-                movesList.Add(Square.At(location.Row - i, location.Col + i));
+                if (CheckForBlockingPiece(location.Row - i, location.Col + i, board))
+                {
+                    movesList.Add(Square.At(location.Row - i, location.Col + i));
+                }
+                else
+                {
+                    break;
+                }
             }
-            for (var i = 1; i < minMoves; i++)
+            for
+                (var i = 1; i < minMoves; i++)
             {
-                movesList.Add(Square.At(location.Row + i, location.Col - i));
+                if (CheckForBlockingPiece(location.Row + i, location.Col - i, board))
+                {
+                    movesList.Add(Square.At(location.Row + i, location.Col - i));
+                }
+                else
+                {
+                    break;
+                }
             }
 
             return movesList;
