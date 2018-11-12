@@ -19,16 +19,16 @@ namespace Chessington.GameEngine.Pieces
                 case Player.Black:
                     if (location.Row == 1)
                     {
-                        movesList.Add(new Square(location.Row+2, location.Col));
+                        movesList.Add(Square.At(location.Row+2, location.Col));
                     }
-                    movesList.Add(new Square(location.Row + 1, location.Col));
+                    movesList.Add(Square.At(location.Row + 1, location.Col));
                     break;
                 case Player.White:
                     if (location.Row == 7)
                     {
-                        movesList.Add(new Square(location.Row - 2, location.Col));
+                        movesList.Add(Square.At(location.Row - 2, location.Col));
                     }
-                    movesList.Add(new Square(location.Row - 1, location.Col));
+                    movesList.Add(Square.At(location.Row - 1, location.Col));
                     break;
             }
             
