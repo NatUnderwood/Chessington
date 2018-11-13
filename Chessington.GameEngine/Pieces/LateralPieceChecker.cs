@@ -17,6 +17,8 @@ namespace Chessington.GameEngine.Pieces
                 }
                 else
                 {
+                    if (board.GetPiece(Square.At(location.Row, i)).Player != board.CurrentPlayer)
+                        movesList.Add(Square.At(location.Row, i));
                     break;
                 }
             }
@@ -29,6 +31,8 @@ namespace Chessington.GameEngine.Pieces
                 }
                 else
                 {
+                    if (board.GetPiece(Square.At(location.Row, i)).Player != board.CurrentPlayer)
+                        movesList.Add(Square.At(location.Row, i));
                     break;
                 }
             }
@@ -41,6 +45,8 @@ namespace Chessington.GameEngine.Pieces
                 }
                 else
                 {
+                    if (board.GetPiece(Square.At(i, location.Col)).Player != board.CurrentPlayer)
+                        movesList.Add(Square.At(i, location.Col));
                     break;
                 }
             }
@@ -53,6 +59,8 @@ namespace Chessington.GameEngine.Pieces
                 }
                 else
                 {
+                    if (board.GetPiece(Square.At(i, location.Col)).Player != board.CurrentPlayer)
+                        movesList.Add(Square.At(i, location.Col));
                     break;
                 }
             }

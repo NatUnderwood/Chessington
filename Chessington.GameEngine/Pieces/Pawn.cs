@@ -19,7 +19,7 @@ namespace Chessington.GameEngine.Pieces
                 case Player.Black:
                     if (location.Row == 7)
                         break;
-                    if (location.Row == 1 && CheckForBlockingPiece(location.Row + 1, location.Col, board) && CheckForBlockingPiece(location.Row + 2, location.Col, board))
+                    if (this.HasMoved==false && CheckForBlockingPiece(location.Row + 1, location.Col, board) && CheckForBlockingPiece(location.Row + 2, location.Col, board))
                     {
                         movesList.Add(Square.At(location.Row+2, location.Col));
                     }
@@ -29,7 +29,7 @@ namespace Chessington.GameEngine.Pieces
                 case Player.White:
                     if (location.Row==0)
                         break;
-                    if (location.Row == 7 && CheckForBlockingPiece(location.Row-1,location.Col,board) && CheckForBlockingPiece(location.Row-2, location.Col, board))
+                    if (this.HasMoved == false && CheckForBlockingPiece(location.Row-1,location.Col,board) && CheckForBlockingPiece(location.Row-2, location.Col, board))
                     {
                         movesList.Add(Square.At(location.Row - 2, location.Col));
                     }
