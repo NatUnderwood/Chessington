@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,53 +11,84 @@ namespace Chessington.GameEngine.Pieces
 
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
+            int[,] potentialMovesArray = { { 1, 1 }, { -1, 1 }, { -1, -1 }, { 1, -1 }, { 0,-1 }, { -1, 0 }, { 1, 0 }, { 0, 1 } };
             var movesList = new List<Square>();
             var location = board.FindPiece(this);
 
-            if (CheckIfAllowedMove(location.Row + 1, location.Col + 1, board))
-                movesList.Add(Square.At(location.Row + 1, location.Col + 1));
+            for (var line = 0; line < 8; line++)
+            {
+                if (OnlyTargetSquarePieceChecker.CheckIfAllowedMove(location.Row + potentialMovesArray[line,0], location.Col + potentialMovesArray[line, 1], board))
+                    movesList.Add(Square.At(location.Row + potentialMovesArray[line, 0], location.Col + potentialMovesArray[line, 1]));
+            }
+            return movesList.Concat(GetAvailableCastleMoves(board));
+        }
 
-            if (CheckIfAllowedMove(location.Row + 1, location.Col, board))
-                movesList.Add(Square.At(location.Row + 1, location.Col));
+        public List<Square> GetAvailableCastleMoves(Board board)
+        {
+            var movesList = new List<Square>();
+            var rookLocations = FindRookStartLocations(board);
 
-            if (CheckIfAllowedMove(location.Row, location.Col + 1, board))
-                movesList.Add(Square.At(location.Row , location.Col + 1));
-
-            if (CheckIfAllowedMove(location.Row - 1, location.Col + 1, board))
-                movesList.Add(Square.At(location.Row - 1, location.Col + 1));
-
-            if (CheckIfAllowedMove(location.Row - 1, location.Col, board))
-                movesList.Add(Square.At(location.Row - 1, location.Col));
-
-            if (CheckIfAllowedMove(location.Row - 1, location.Col - 1, board))
-                movesList.Add(Square.At(location.Row - 1, location.Col - 1));
-
-            if (CheckIfAllowedMove(location.Row + 1, location.Col - 1, board))
-                movesList.Add(Square.At(location.Row + 1, location.Col - 1));
-
-            if (CheckIfAllowedMove(location.Row, location.Col - 1, board))
-                movesList.Add(Square.At(location.Row, location.Col - 1));
-
+            for (var rookNumber = 0; rookNumber < 2; rookNumber++)
+            {
+                if (CheckIfRookPresent(board, rookLocations[rookNumber]) && CastleChecker.CheckIfCastleAllowed(this, (Rook)board.GetPiece(rookLocations[rookNumber]), board))
+                {
+                    movesList.Add(CastleChecker.FindCastleLocationDictionary(this, (Rook)board.GetPiece(rookLocations[rookNumber]), board)["king"]);
+                }
+            }
             return movesList;
         }
-        public bool CheckIfAllowedMove(int attemptedRow, int attemptedCol, Board board)
+
+        public bool checkIfCastleMove(Board board, Square newSquare)
         {
-            var location = Square.At(attemptedRow, attemptedCol);
-            if (attemptedCol < 8 && attemptedCol >= 0 && attemptedRow < 8 && attemptedRow >= 0 && CheckIfSquareOccupied(attemptedRow, attemptedCol, board))
-                return true;
-            return false;
+            return GetAvailableCastleMoves(board).Contains(newSquare);
         }
 
-        public bool CheckIfSquareOccupied(int attemptedRow, int attemptedCol, Board board)
+        public bool CheckIfRookPresent(Board board, Square rook)
         {
-            var location = Square.At(attemptedRow, attemptedCol);
-            if (board.GetPiece(location) == null)
+            return board.GetPiece(rook) is Rook;
+        }
+
+        public Square[] FindRookStartLocations(Board board)
+        {
+            var rookLocation = new Square[2];
+            switch (Player)
             {
-                return true;
+                case Player.White:
+                    rookLocation[0] = Square.At(7, 0);
+                    rookLocation[1] = Square.At(7, 7);
+                    break;
+                case Player.Black:
+                    rookLocation[0] = Square.At(0, 0);
+                    rookLocation[1] = Square.At(0, 7);
+                    break;
             }
-            if (board.GetPiece(location).Player != board.CurrentPlayer)
-                return true;
-            return false;
+
+            return rookLocation;
+        }
+        public new void MoveTo(Board board, Square newSquare)
+        {
+            var currentSquare = board.FindPiece(this);
+            if (checkIfCastleMove(board, newSquare))
+            {
+                var direction = Math.Sign(currentSquare.Col - newSquare.Col);
+                var rookOldSquare = new Square();
+                switch (direction)
+                {
+                    case -1:
+                        rookOldSquare = Square.At(newSquare.Row, 7);
+                        break;
+                    case 1:
+                        rookOldSquare = Square.At(newSquare.Row, 0);
+                        break;
+                }
+
+                var rookNewSquare = Square.At(newSquare.Row, newSquare.Col + direction);
+                board.MovePiece(rookOldSquare, rookNewSquare);
+                board.CurrentPlayer = board.CurrentPlayer == Player.White ? Player.Black : Player.White;
+
+            }
+            board.MovePiece(currentSquare, newSquare);
+            HasMoved = true;
         }
     }
 }

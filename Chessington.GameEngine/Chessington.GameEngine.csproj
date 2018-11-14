@@ -37,7 +37,9 @@
     <Compile Include="Pieces\Bishop.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="Pieces\CastleChecker.cs" />
     <Compile Include="Pieces\DiagonalPieceChecker.cs" />
+    <Compile Include="Pieces\OnlyTargetSquarePieceChecker.cs" />
     <Compile Include="Pieces\LateralPieceChecker.cs" />
     <Compile Include="Pieces\Piece.cs" />
     <Compile Include="Pieces\King.cs" />

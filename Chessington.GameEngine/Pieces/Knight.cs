@@ -8,57 +8,21 @@ namespace Chessington.GameEngine.Pieces
     public class Knight : Piece
     {
         public Knight(Player player)
-            : base(player) { }
+            : base(player)
+        {
+        }
 
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
+            int[,] potentialMovesArray = {{1, 2}, {-1, 2}, {-1, -2},{ 1,-2},{-2, 1},{-2, -1},{2, -1},{2, 1}};
             var movesList = new List<Square>();
             var location = board.FindPiece(this);
-            if (CheckIfSquareExistingAndNotOccupiedByPlayer(location.Row + 1, location.Col + 2, board))
-                movesList.Add(Square.At(location.Row + 1, location.Col+2));
-
-            if (CheckIfSquareExistingAndNotOccupiedByPlayer(location.Row - 1, location.Col + 2, board))
-                movesList.Add(Square.At(location.Row - 1, location.Col + 2));
-
-            if (CheckIfSquareExistingAndNotOccupiedByPlayer(location.Row - 1, location.Col - 2, board))
-                movesList.Add(Square.At(location.Row - 1, location.Col - 2));
-
-            if (CheckIfSquareExistingAndNotOccupiedByPlayer(location.Row + 1, location.Col - 2, board))
-                movesList.Add(Square.At(location.Row + 1, location.Col - 2));
-
-            if (CheckIfSquareExistingAndNotOccupiedByPlayer(location.Row - 2, location.Col + 1, board))
-                movesList.Add(Square.At(location.Row - 2, location.Col + 1));
-
-            if (CheckIfSquareExistingAndNotOccupiedByPlayer(location.Row - 2, location.Col - 1, board))
-                movesList.Add(Square.At(location.Row - 2, location.Col - 1));
-
-            if (CheckIfSquareExistingAndNotOccupiedByPlayer(location.Row + 2, location.Col - 1, board))
-                movesList.Add(Square.At(location.Row + 2, location.Col - 1));
-
-            if (CheckIfSquareExistingAndNotOccupiedByPlayer(location.Row + 2, location.Col + 1, board))
-                movesList.Add(Square.At(location.Row + 2, location.Col + 1));
-
-            return movesList;
-        }
-
-        public bool CheckIfSquareExistingAndNotOccupiedByPlayer( int attemptedRow, int attemptedCol, Board board)
-        {
-            var location = Square.At(attemptedRow, attemptedCol);
-            if (attemptedCol < 8 && attemptedCol >= 0 && attemptedRow < 8 && attemptedRow >= 0 && CheckIfSquareOccupied(attemptedRow,attemptedCol,board))
-                return true;
-            return false;
-        }
-
-        public bool CheckIfSquareOccupied(int attemptedRow, int attemptedCol, Board board)
-        {
-            var location = Square.At(attemptedRow, attemptedCol);
-            if (board.GetPiece(location) == null)
+            for (var line = 0; line <8; line++)
             {
-                return true;
+                if(OnlyTargetSquarePieceChecker.CheckIfAllowedMove(location.Row + potentialMovesArray[line,0], location.Col + potentialMovesArray[line, 1], board))
+                movesList.Add(Square.At(location.Row + potentialMovesArray[line, 0], location.Col + potentialMovesArray[line, 1]));
             }
-            if (board.GetPiece(location).Player != board.CurrentPlayer)
-                return true;
-            return false;
+            return movesList;
         }
     }
 }

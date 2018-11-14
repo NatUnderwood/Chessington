@@ -8,7 +8,7 @@ namespace Chessington.GameEngine
     public class Board
     {
         private readonly Piece[,] board;
-        public Player CurrentPlayer { get; private set; }
+        public Player CurrentPlayer { get; set; }
         public IList<Piece> CapturedPieces { get; private set; } 
 
         public Board()
@@ -60,7 +60,7 @@ namespace Chessington.GameEngine
             //Move the piece and set the 'from' square to be empty.
             board[to.Row, to.Col] = board[from.Row, from.Col];
             board[from.Row, from.Col] = null;
-
+            //DEAL WITH THIs
             CurrentPlayer = movingPiece.Player == Player.White ? Player.Black : Player.White;
             OnCurrentPlayerChanged(CurrentPlayer);
         }
