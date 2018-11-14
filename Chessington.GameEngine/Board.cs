@@ -41,6 +41,11 @@ namespace Chessington.GameEngine
             throw new ArgumentException("The supplied piece is not on the board.", "piece");
         }
 
+        public Piece[,] FindBoardState()
+        {
+            return board;
+        }
+
         public void MovePiece(Square from, Square to)
         {
             var movingPiece = board[from.Row, from.Col];

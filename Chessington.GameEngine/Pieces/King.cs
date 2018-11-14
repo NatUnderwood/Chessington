@@ -65,7 +65,7 @@ namespace Chessington.GameEngine.Pieces
 
             return rookLocation;
         }
-        public new void MoveTo(Board board, Square newSquare)
+        public override void MoveTo(Board board, Square newSquare)
         {
             var currentSquare = board.FindPiece(this);
             if (checkIfCastleMove(board, newSquare))
